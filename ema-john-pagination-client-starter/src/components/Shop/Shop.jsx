@@ -3,11 +3,25 @@ import { addToDb, deleteShoppingCart, getShoppingCart } from '../../utilities/fa
 import Cart from '../Cart/Cart';
 import Product from '../Product/Product';
 import './Shop.css';
-import { Link } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([])
+    const [currentPage, setCurrentPage] = useState(0);
+    const { totalCount } = useLoaderData()
+    // console.log(totalCount);
+    const [itemPerPage, setItemPerPage] = useState(10)
+
+    const numberOfPages = Math.ceil(totalCount / itemPerPage);
+    const pages = [...Array(numberOfPages).keys()];
+    console.log(pages);
+
+    const handlePagination = (e) => {
+        const val = e.target.value;
+        setItemPerPage(val);
+        setCurrentPage(0);
+    }
 
     useEffect(() => {
         fetch('http://localhost:5000/products')
@@ -81,6 +95,24 @@ const Shop = () => {
                         <button className='btn-proceed'>Review Order</button>
                     </Link>
                 </Cart>
+            </div>
+            <div className='pagination'>
+                <p>current page: {currentPage}</p>
+                <button onClick={() => { if (currentPage > 0) { setCurrentPage(currentPage - 1) }}}>Prev</button>
+                {
+                    pages.map(page => <button
+                        className={currentPage === page && 'selected'}
+                        onClick={()=>setCurrentPage(page)}
+                        key={page}
+                    >{page}</button>)
+                }
+                <button onClick={() => { if (currentPage <= pages.length-2) { setCurrentPage(currentPage + 1) }}}>Next</button>
+                <select value={itemPerPage} onChange={handlePagination}>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                </select>
             </div>
         </div>
     );

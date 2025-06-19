@@ -25,3 +25,25 @@
     justify-content: space-between;
     align-items: center;
 }
+
+.pagination{
+    text-align: center;
+    margin: 20px 0;
+}
+.pagination>button{
+    margin: 0 10px;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 22px;
+}
+.selected{
+    background-color: #FF9900;
+}
+.pagination-btn{
+    margin: 0 5px;
+    padding: 1px 15px;
+}
+.pagination-btn:hover{
+    background-color: #FF9900;
+}
